@@ -1,0 +1,325 @@
+<!-- livebook:{"persist_outputs":true} -->
+
+# 01 // Intro
+
+## Basic Data Types
+
+[`IEx.Helpers.i/1`](https://hexdocs.pm/iex/IEx.Helpers.html#i/1) is automatically imported in `iex`, as well as other functions from that module, so we don't need to prefix it there.
+
+<!-- livebook:{"break_markdown":true} -->
+
+### Integers
+
+```elixir
+value = 1
+IEx.Helpers.i(value)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+Term
+  1
+Data type
+  Integer
+Reference modules
+  Integer
+Implemented protocols
+  IEx.Info, Inspect, List.Chars, String.Chars
+```
+
+There's a built in support for other numeral system bases:
+
+```elixir
+value = 0b10100111001
+IEx.Helpers.i(value)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+Term
+  1337
+Data type
+  Integer
+Reference modules
+  Integer
+Implemented protocols
+  IEx.Info, Inspect, List.Chars, String.Chars
+```
+
+```elixir
+0o2471
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+1337
+```
+
+```elixir
+0x539
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+1337
+```
+
+There's also a syntax-sugar convinience for writing and especially reading big numbers in code:
+
+```elixir
+1_000_000
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+1000000
+```
+
+### Floats
+
+with 64-bit double precision
+
+```elixir
+value = 3.14
+IEx.Helpers.i(3.14)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+Term
+  3.14
+Data type
+  Float
+Reference modules
+  Float
+Implemented protocols
+  IEx.Info, Inspect, List.Chars, String.Chars
+```
+
+Elixir supports `e` for exponent values:
+
+```elixir
+1.0e-10
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+1.0e-10
+```
+
+### Booleans
+
+There is `true` and `false`.
+
+Everything except `false` and `nil` is truthy.
+
+![](images/alien_comparisons.jpg)
+
+```elixir
+true
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+true
+```
+
+```elixir
+false
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+false
+```
+
+### Atoms
+
+Atom is a constant whose name is its value.
+They are heavily used in pattern matching, a key Elixir feature, which we will learn about later.
+
+```elixir
+:appliscale
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+:appliscale
+```
+
+`true` and `false` keywords are actually `:true` and `:false` atoms underneath
+
+```elixir
+true === true
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+true
+```
+
+Names of modules in Elixir are also atoms.
+
+```elixir
+MyApp.MyModule
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+MyApp.MyModule
+```
+
+```elixir
+is_atom(MyApp.MyModule)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+true
+```
+
+```elixir
+to_string(MyApp.Module)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+"Elixir.MyApp.Module"
+```
+
+If we remove the `Elixir.` prefix from the code below, it's no longer true.
+
+```elixir
+:"Elixir.MyApp.Module" == MyApp.Module
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+true
+```
+
+### Strings
+
+UTF-8 encoded, wrapped in double quotes
+
+```elixir
+"Elixir workshop is bussin rn fr 😎👍🏻"
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+"Elixir workshop is bussin rn fr 😎👍🏻"
+```
+
+```elixir
+"Ząb zupa zębowa, dąb zupa dębowa"
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+"Ząb zupa zębowa, dąb zupa dębowa"
+```
+
+```elixir
+"""
+All work
+and no play
+makes Jack
+a dull boy.
+"""
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+"All work\nand no play\nmakes Jack\na dull boy.\n"
+```
+
+## Basic Operations
+
+### Comparison
+
+<!-- livebook:{"break_markdown":true} -->
+
+Available operators are:
+
+* `==`, `===`
+* `!=`, `!===`
+* `>`, `>=`
+* `<`, `<=`
+
+`===` is more strict than `==` when it comes to **comparing ints and floats**.
+
+```elixir
+2 == 2.0
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+true
+```
+
+```elixir
+2 === 2.0
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+false
+```
+
+Any two types can be compared and this is the ordering of types:
+
+`number < atom < reference < function < port < pid < tuple < map < list < bitstring`
+
+```elixir
+[1, 2, 3] > :bruh
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+true
+```
+
+### String Interpolation/Concatenation
+
+```elixir
+mood = "cute"
+"feelin' #{mood} might delete later idk"
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+"feelin' cute might delete later idk"
+```
+
+```elixir
+"feelin' " <> mood <> " might delete later idk"
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+"feelin' cute might delete later idk"
+```
