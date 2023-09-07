@@ -2,13 +2,25 @@
 
 # 01 // Intro
 
+```elixir
+Mix.install([
+  {:kino, "~> 0.10.0"}
+])
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+:ok
+```
+
 ## Basic Data Types
 
 [`IEx.Helpers.i/1`](https://hexdocs.pm/iex/IEx.Helpers.html#i/1) is automatically imported in `iex`, as well as other functions from that module, so we don't need to prefix it there.
 
 <!-- livebook:{"break_markdown":true} -->
 
-### Integers
+### [Integers](https://hexdocs.pm/elixir/Integer.html)
 
 ```elixir
 value = 1
@@ -25,7 +37,7 @@ Data type
 Reference modules
   Integer
 Implemented protocols
-  IEx.Info, Inspect, List.Chars, String.Chars
+  IEx.Info, Inspect, Kino.Render, List.Chars, String.Chars
 ```
 
 There's a built in support for other numeral system bases:
@@ -45,7 +57,7 @@ Data type
 Reference modules
   Integer
 Implemented protocols
-  IEx.Info, Inspect, List.Chars, String.Chars
+  IEx.Info, Inspect, Kino.Render, List.Chars, String.Chars
 ```
 
 ```elixir
@@ -80,7 +92,7 @@ There's also a syntax-sugar convinience for writing and especially reading big n
 1000000
 ```
 
-### Floats
+### [Floats](https://hexdocs.pm/elixir/Float.html#content)
 
 with 64-bit double precision
 
@@ -99,7 +111,7 @@ Data type
 Reference modules
   Float
 Implemented protocols
-  IEx.Info, Inspect, List.Chars, String.Chars
+  IEx.Info, Inspect, Kino.Render, List.Chars, String.Chars
 ```
 
 Elixir supports `e` for exponent values:
@@ -142,7 +154,7 @@ false
 false
 ```
 
-### Atoms
+### [Atoms](https://hexdocs.pm/elixir/Atom.html)
 
 Atom is a constant whose name is its value.
 They are heavily used in pattern matching, a key Elixir feature, which we will learn about later.
@@ -213,7 +225,7 @@ If we remove the `Elixir.` prefix from the code below, it's no longer true.
 true
 ```
 
-### Strings
+### [Strings](https://hexdocs.pm/elixir/String.html)
 
 UTF-8 encoded, wrapped in double quotes
 
@@ -322,4 +334,380 @@ mood = "cute"
 
 ```
 "feelin' cute might delete later idk"
+```
+
+## Collections
+
+### [Lists](https://hexdocs.pm/elixir/List.html)
+
+Lists may include multiple types.
+
+```elixir
+list = [1337, 1.337, :pog]
+IEx.Helpers.i(list)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+Term
+  [1337, 1.337, :pog]
+Data type
+  List
+Reference modules
+  List
+Implemented protocols
+  Collectable, Enumerable, IEx.Info, Inspect, Kino.Render, List.Chars, String.Chars, Table.Reader
+```
+
+Lists are implemented as linked lists. It's typically faster to prepend than to append:
+
+```elixir
+# Prepending (fast)
+["test" | list]
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+["test", 1337, 1.337, :pog]
+```
+
+```elixir
+# Appending (slow)
+list ++ ["test"]
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+[1337, 1.337, :pog, "test"]
+```
+
+🙋🏻 **What is the complexity of `length(list)` in Elixir?**
+
+<!-- livebook:{"break_markdown":true} -->
+
+By the way, operators like `++` (list concatenation), `--` (list subtraction) are actually functions from the [`Kernel`](https://hexdocs.pm/elixir/Kernel.html#functions) module. They are always imported by default so you don't have to prefix them. However, there are some cases where you must do that and you'll get to know them later.
+
+<!-- livebook:{"break_markdown":true} -->
+
+#### Head/Tail
+
+<!-- livebook:{"break_markdown":true} -->
+
+![](images/head_tail.png)
+
+```elixir
+hd(list)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+1337
+```
+
+```elixir
+tl(list)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+[1.337, :pog]
+```
+
+🙋🏻 **What `list` are we referring to?** Why `"test"` is neither the head nor in the tail?
+
+<!-- livebook:{"break_markdown":true} -->
+
+### [Tuples](https://hexdocs.pm/elixir/Tuple.html)
+
+Similar to lists, but stored contiguously in memory.
+
+```elixir
+tuple = {1337, 1.337, :pog}
+IEx.Helpers.i(tuple)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+Term
+  {1337, 1.337, :pog}
+Data type
+  Tuple
+Reference modules
+  Tuple
+Implemented protocols
+  IEx.Info, Inspect, Kino.Render
+```
+
+Given the aforementioned fact, we know that getting the size of a tuple is faster than getting the length of a list.
+
+**Rule of a thumb from the old times when C ruled:** _size_ stands for something fixed and _length_ stands for something variable.
+
+[Unfortunately, Java decided to turn things around.](https://softwareengineering.stackexchange.com/questions/303909/what-is-the-difference-between-size-and-length)
+
+```elixir
+File.read("path/to/unknown/file")
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+{:error, :enoent}
+```
+
+### [Keyword lists](https://hexdocs.pm/elixir/Keyword.html)
+
+It's a special list of two-element tuples whose first element is an atom.
+
+Keys are **ordered** and don't have to be unique.
+
+```elixir
+kl = [foo: "bar", hello: "world"]
+IEx.Helpers.i(kl)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+Term
+  [foo: "bar", hello: "world"]
+Data type
+  List
+Description
+  This is what is referred to as a "keyword list". A keyword list is a list
+  of two-element tuples where the first element of each tuple is an atom.
+Reference modules
+  Keyword, List
+Implemented protocols
+  Collectable, Enumerable, IEx.Info, Inspect, Kino.Render, List.Chars, String.Chars, Table.Reader
+```
+
+```elixir
+[{:foo, "bar"}, {:hello, "world"}] == kl
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+true
+```
+
+### [Maps](https://hexdocs.pm/elixir/Map.html)
+
+Keys can be of any type and **are not ordered**.
+
+```elixir
+map = %{:foo => "bar", "hello" => :world}
+IEx.Helpers.i(map)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+Term
+  %{:foo => "bar", "hello" => :world}
+Data type
+  Map
+Reference modules
+  Map
+Implemented protocols
+  Collectable, Enumerable, IEx.Info, Inspect, Kino.Render, Table.Reader
+```
+
+There is a special syntax for maps containing **only atom keys**:
+
+```elixir
+special_syntax_map = %{key1: "val1", key2: "val2"}
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+%{key1: "val1", key2: "val2"}
+```
+
+```elixir
+special_syntax_map == %{:key1 => "val1", :key2 => "val2"}
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+true
+```
+
+Here's a sneak peek of using the `Map` module.
+
+`Map.put/3` allows to put a value in the map under a key.
+
+<!-- livebook:{"break_markdown":true} -->
+
+⌨️ TODO: create a new Elixir cell below and a key-value pair to the `special_syntax_map` map.
+
+## Functions
+
+### Anonymous function
+
+An anonymous function **has no name**. They are frequently passed to other functions.
+
+```elixir
+sum = fn a, b -> a + b end
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Function<41.125776118/2 in :erl_eval.expr/6>
+```
+
+```elixir
+sum(7, 3)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+error: undefined function sum/2 (there is no such import)
+  stuff/elixir_workshop/01_intro.livemd#cell:4c24sprar5tmoh4dxn6x6ey6nizyocmp:1
+
+```
+
+If you're invoking the anonymous function itself you must follow it with a `.`.
+
+```elixir
+sum.(7, 3)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+10
+```
+
+#### The `&` shorthand
+
+It takes some time to get used to it. Parameters can be referred to as `&1`, `&2`, and so on, almost like in Bash, but starting from `1`.
+
+```elixir
+subtract = &(&1 - &2)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+&:erlang.-/2
+```
+
+```elixir
+subtract.(5, 4)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+1
+```
+
+### Arity
+
+For now, we just need to know that _arity_ is a number of input parameters that a function takes.
+
+<!-- livebook:{"break_markdown":true} -->
+
+### Pipe operator
+
+Takes the result of one expression and passes it on as the first argument to the next one (like in Bash, again).
+
+```elixir
+input = "   skcor rixile     "
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+"   skcor rixile     "
+```
+
+```elixir
+String.split(String.upcase(String.trim(String.reverse(input))))
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+["ELIXIR", "ROCKS"]
+```
+
+vs.
+
+```elixir
+input
+|> String.reverse()
+|> String.trim()
+|> String.upcase()
+|> String.split()
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+["ELIXIR", "ROCKS"]
+```
+
+TODO: fit named functions + multi-clause somewhere
+
+## Enum
+
+```elixir
+Enum.__info__(:functions)
+|> Enum.map(fn {name, _arity} -> name end)
+|> Enum.uniq()
+|> length()
+
+# |> dbg()
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+74
+```
+
+The [Enum](https://hexdocs.pm/elixir/Enum.html) module includes --number from above-- functions for working with enumerables.
+
+**All the collections (except Tuples) that we just learned about are enumerables**.
+
+<!-- livebook:{"break_markdown":true} -->
+
+### Examples
+
+<!-- livebook:{"break_markdown":true} -->
+
+#### [`Enum.filter/2`](https://hexdocs.pm/elixir/Enum.html#filter/2)
+
+```elixir
+Enum.filter([1, 2, 3, 4], fn x -> rem(x, 2) == 0 end)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+[2, 4]
+```
+
+#### [`Enum.reduce/3`](https://hexdocs.pm/elixir/Enum.html#reduce/3)
+
+```elixir
+Enum.reduce([1, 2, 3], 0, fn x, acc -> acc + x end)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+6
 ```
