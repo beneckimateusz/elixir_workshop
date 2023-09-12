@@ -277,7 +277,7 @@ Available operators are:
 * `>`, `>=`
 * `<`, `<=`
 
-`===` is more strict than `==` when it comes to **comparing ints and floats**.
+`===` is just more strict than `==` when it comes to **comparing ints and floats**.
 
 ```elixir
 2 == 2.0
@@ -390,9 +390,29 @@ list ++ ["test"]
 
 By the way, operators like `++` (list concatenation), `--` (list subtraction) are actually functions from the [`Kernel`](https://hexdocs.pm/elixir/Kernel.html#functions) module. They are always imported by default so you don't have to prefix them. However, there are some cases where you must do that and you'll get to know them later.
 
-<!-- livebook:{"break_markdown":true} -->
+```elixir
+Kernel.++(list, ["test"])
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+[1337, 1.337, :pog, "test"]
+```
 
 #### Head/Tail
+
+```elixir
+list
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+[1337, 1.337, :pog]
+```
+
+🙋🏻 **What `list` are we referring to?** Why `"test"` is neither the head nor in the tail?
 
 <!-- livebook:{"break_markdown":true} -->
 
@@ -417,10 +437,6 @@ tl(list)
 ```
 [1.337, :pog]
 ```
-
-🙋🏻 **What `list` are we referring to?** Why `"test"` is neither the head nor in the tail?
-
-<!-- livebook:{"break_markdown":true} -->
 
 ### [Tuples](https://hexdocs.pm/elixir/Tuple.html)
 
@@ -547,7 +563,27 @@ Here's a sneak peek of using the `Map` module.
 
 <!-- livebook:{"break_markdown":true} -->
 
-⌨️ TODO: create a new Elixir cell below and a key-value pair to the `special_syntax_map` map.
+⌨️ Hands-on: create a new Elixir cell below and add a key-value pair to the `special_syntax_map` map.
+
+<!-- livebook:{"break_markdown":true} -->
+
+There's also a shortcut for updating **existing** keys in a map:
+
+```elixir
+%{special_syntax_map | key1: "new value"}
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+%{key1: "new value", key2: "val2"}
+```
+
+It won't work for keys that don't already exist in the map:
+
+```elixir
+%{special_syntax_map | odd_key: "test"}
+```
 
 ## Functions
 
@@ -573,7 +609,7 @@ sum(7, 3)
 
 ```
 error: undefined function sum/2 (there is no such import)
-  stuff/elixir_workshop/01_intro.livemd#cell:4c24sprar5tmoh4dxn6x6ey6nizyocmp:1
+  stuff/elixir_workshop/01_intro.livemd#cell:eesrhhsufiwb2wlvjzvymubqguz375cx:1
 
 ```
 
@@ -611,6 +647,60 @@ subtract.(5, 4)
 
 ```
 1
+```
+
+### Named functions
+
+Named functions are defined **within a module** using the `def` keyword.
+
+In simple terms, module is a collection of functions and a way to organize the code. That's all we need to know for know.
+
+```elixir
+defmodule DummyCow do
+  def say() do
+    """
+          ________________________________________
+    / There are only two hard things in        \\
+    | Computer Science: cache invalidation and |
+    \\ naming things.                           /
+      ----------------------------------------
+            \   ^__^ 
+              \  (oo)\_______
+                (__)\       )\/\\
+                    ||----w |
+                    ||     ||
+    """
+  end
+
+  # short functions can be defined in one line
+  def oneliner(a, b), do: a + b
+end
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+{:module, DummyCow, <<70, 79, 82, 49, 0, 0, 7, ...>>, {:oneliner, 2}}
+```
+
+```elixir
+DummyCow.say()
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+"      ________________________________________\n/ There are only two hard things in        \\\n| Computer Science: cache invalidation and |\n\\ naming things.                           /\n  ----------------------------------------\n           ^__^ \n            (oo)_______\n            (__)       )/\\\n                ||----w |\n                ||     ||\n"
+```
+
+```elixir
+DummyCow.oneliner(1, 2)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+3
 ```
 
 ### Arity
@@ -659,8 +749,6 @@ input
 ["ELIXIR", "ROCKS"]
 ```
 
-TODO: fit named functions + multi-clause somewhere
-
 ## Enum
 
 ```elixir
@@ -700,6 +788,27 @@ Enum.filter([1, 2, 3, 4], fn x -> rem(x, 2) == 0 end)
 [2, 4]
 ```
 
+```elixir
+Enum.filter([1, 2, 3, 4], &(rem(&1, 2) == 0))
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+[2, 4]
+```
+
+```elixir
+even? = &(rem(&1, 2) == 0)
+Enum.filter([1, 2, 3, 4], even?)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+[2, 4]
+```
+
 #### [`Enum.reduce/3`](https://hexdocs.pm/elixir/Enum.html#reduce/3)
 
 ```elixir
@@ -710,4 +819,449 @@ Enum.reduce([1, 2, 3], 0, fn x, acc -> acc + x end)
 
 ```
 6
+```
+
+```elixir
+Enum.reduce([1, 2, 3], 0, &Kernel.+/2)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+6
+```
+
+## Pattern matching
+
+A powerful part of Elixir.
+
+Something like [Javascript destructuring assignment](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment?retiredLocale=pl) but on steroids.
+
+<!-- livebook:{"break_markdown":true} -->
+
+### Match Operator
+
+<!-- livebook:{"break_markdown":true} -->
+
+Elixir tries to match the values on the left hand of the match operator `=` (which we call a _pattern_) with the values on the right hand. If it succeeds, it returns the right hand side.
+
+<!-- livebook:{"break_markdown":true} -->
+
+A variable always matches the right-side term, and it becomes bound to the value of that term.
+
+```elixir
+x = 1
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+1
+```
+
+```elixir
+x
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+1
+```
+
+```elixir
+1 = x
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+1
+```
+
+```elixir
+2 = x
+```
+
+#### Tuple example
+
+```elixir
+{amount, amount, amount} = {127, 127, 128}
+```
+
+```elixir
+{amount, amount, amount} = {127, 127, 127}
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+{127, 127, 127}
+```
+
+We use a `:calendar.local_time/0` funtion which comes from Erlang, hence it's referred to as `:calendar` and not `Calendar`, because as we remember, `Calendar` resolves to `:"Elixir.Calendar"`.
+
+```elixir
+{date, time} = :calendar.local_time()
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+{{2023, 9, 12}, {8, 22, 32}}
+```
+
+```elixir
+{year, month, day} = date
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+{2023, 9, 12}
+```
+
+```elixir
+month
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+9
+```
+
+```elixir
+{hour, minute, second} = time
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+{8, 22, 32}
+```
+
+```elixir
+second
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+32
+```
+
+```elixir
+{_, {hour, _, _}} = :calendar.local_time()
+hour
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+8
+```
+
+#### List example
+
+Remember head and tail?
+
+```elixir
+list = [1, 2, 3]
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+[1, 2, 3]
+```
+
+```elixir
+[1 | _] = list
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+[1, 2, 3]
+```
+
+```elixir
+[_ | tail] = list
+tail
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+[2, 3]
+```
+
+```elixir
+[] = list
+```
+
+```elixir
+[_] = list
+```
+
+```elixir
+[_ | _] = list
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+[1, 2, 3]
+```
+
+### Pin operator
+
+<!-- livebook:{"break_markdown":true} -->
+
+The match operator performs assignment when the left side of the match includes a variable.
+
+In some cases this variable rebinding behavior is undesirable. For these situations we have the pin operator: `^`.
+
+```elixir
+x = 1
+x
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+1
+```
+
+```elixir
+x = 2
+x
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+2
+```
+
+```elixir
+^x = 3
+```
+
+```elixir
+x
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+2
+```
+
+```elixir
+{x, ^x} = {3, 2}
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+{3, 2}
+```
+
+```elixir
+x
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+3
+```
+
+## Control structures
+
+Control structures have return values, so their result can be assigned to a variable.
+
+<!-- livebook:{"break_markdown":true} -->
+
+### `if`
+
+```elixir
+if false do
+  "not the result"
+else
+  "result"
+end
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+"result"
+```
+
+`else` is not obligatory
+
+```elixir
+if "truthy value" do
+  "truthy"
+end
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+"truthy"
+```
+
+```elixir
+if false do
+  "that's not the result"
+end
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+nil
+```
+
+There's no `else if`/`elif` counterpart but there are other control structures that achieve a lot powered by pattern matching.
+
+<!-- livebook:{"break_markdown":true} -->
+
+### `case`
+
+<!-- livebook:{"break_markdown":true} -->
+
+Handful if it's neccessary to match against multiple patterns.
+
+```elixir
+case {:ok, "hello world"} do
+  {:ok, result} -> result
+  {:error} -> "nahh"
+  _ -> "catch em all"
+end
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+"hello world"
+```
+
+```elixir
+case 12 do
+  {:ok, result} -> result
+  {:error} -> "nahh"
+  _ -> "catch em all"
+end
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+"catch em all"
+```
+
+The `_` variable is an important inclusion in `case/2` statements. Without it, failure to find a match will raise an error:
+
+```elixir
+case :even do
+  :odd -> "odd"
+end
+```
+
+## Code examples
+
+```elixir
+defmodule Recursion do
+  def factorial(0), do: 1
+  def factorial(n) when n > 0, do: n * factorial(n - 1)
+end
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+{:module, Recursion, <<70, 79, 82, 49, 0, 0, 6, ...>>, {:factorial, 1}}
+```
+
+### Recursion and multi-clause functions using pattern matching
+
+<!-- livebook:{"break_markdown":true} -->
+
+Multi-clause function (same arity for every clause) is just one function underneath, but visually it's splitted into multiple clauses.
+
+```elixir
+Recursion.factorial(0)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+1
+```
+
+```elixir
+Recursion.factorial(5)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+120
+```
+
+```elixir
+Recursion.factorial(-1)
+```
+
+### Frequencies
+
+<!-- livebook:{"break_markdown":true} -->
+
+🧑🏻‍🏫 Explain map pattern matching and key binding.
+
+```elixir
+defmodule Example do
+  def frequencies(sequence) do
+    Enum.reduce(sequence, %{}, fn key, frequencies ->
+      case frequencies do
+        %{^key => count} -> %{frequencies | key => count + 1}
+        %{} -> Map.put(frequencies, key, 1)
+      end
+    end)
+  end
+end
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+{:module, Example, <<70, 79, 82, 49, 0, 0, 7, ...>>, {:frequencies, 1}}
+```
+
+```elixir
+list = [1, 1, 2, 3, 2, 4, 5, 4, 4]
+Example.frequencies(list)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+%{1 => 2, 2 => 2, 3 => 1, 4 => 3, 5 => 1}
+```
+
+Of course, `Enum` has it already [implemented for us](https://github.com/elixir-lang/elixir/blob/main/lib/elixir/lib/enum.ex#L1331-L1338):
+
+```elixir
+Enum.frequencies(list)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+%{1 => 2, 2 => 2, 3 => 1, 4 => 3, 5 => 1}
 ```
