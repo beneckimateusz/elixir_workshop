@@ -13,7 +13,7 @@ defmodule ElixirWorkshop.TaskCell do
   def handle_connect(ctx) do
     # fetch list of tasks from remote
     remote = String.to_atom(System.get_env("LB_WORKSHOP"))
-    tasks = :rpc.call(remote, ElixirWorkshop.TaskRunner, :get_tasks_list, [])
+    tasks = GenServer.call({remote, ElixirWorkshop.TaskRunner}, :get_tasks_list)
     {:ok, %{tasks: tasks}, ctx}
   end
 
