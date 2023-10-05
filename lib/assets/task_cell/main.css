@@ -1,0 +1,11 @@
+#task-cell {
+    padding: 1rem;
+    background: rgb(233, 233, 233);
+    border-top-right-radius: 0.5rem;
+    border-top-left-radius: 0.5rem;
+}
+
+select {
+    height: 1.5rem;
+    margin-left: 5px;
+}
