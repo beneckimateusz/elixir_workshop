@@ -19,6 +19,7 @@ defmodule ElixirWorkshop.TaskRunner do
   end
 
   def handle_call({:submit_task, task_name, task_code}, from, state) do
+    task_code = Code.format_string!(task_code)
     Logger.info("Received solution for task #{task_name} from #{inspect(from)}:\n\n#{task_code}")
     {:reply, :ok, state}
   end

@@ -37,7 +37,7 @@ defmodule ElixirWorkshop.TaskCell do
   @impl true
   def to_source(%{"code" => code, "task" => task, "remote" => remote}) do
     """
-    GenServer.call({ElixirWorkshop.TaskRunner, :"#{remote}"}, {:submit_task, "#{task}", #{code}})
+    GenServer.call({ElixirWorkshop.TaskRunner, :"#{remote}"}, {:submit_task, "#{task}", "#{code}"})
     """
   end
 end
