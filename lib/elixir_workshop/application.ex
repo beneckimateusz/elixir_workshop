@@ -7,7 +7,7 @@ defmodule ElixirWorkshop.Application do
 
   @impl true
   def start(_type, _args) do
-    Kino.SmartCell.register(ElixirWorkshop)
+    Kino.SmartCell.register(ElixirWorkshop.TaskCell)
 
     children = [
       # Starts a worker by calling: ElixirWorkshop.Worker.start_link(arg)
