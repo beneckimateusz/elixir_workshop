@@ -40,8 +40,13 @@ defmodule ElixirWorkshop.TaskCell do
            {ElixirWorkshop.TaskRunner, remote},
            {:submit_task, task, code}
          ) do
-      :ok -> code
-      _ -> "Validation failed 🧐 Call Mateusz 👨‍🏫"
+      :ok ->
+        code
+
+      _ ->
+        """
+        "Validation failed 🧐 Call Mateusz 👨‍🏫"
+        """
     end
   end
 end
