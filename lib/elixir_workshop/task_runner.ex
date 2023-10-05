@@ -18,9 +18,16 @@ defmodule ElixirWorkshop.TaskRunner do
     {:reply, tasks_list, state}
   end
 
-  def handle_call({:submit_task, task_name, task_code}, from, state) do
+  def handle_call({:submit_task, task_name, task_code}, {pid, _alias}, state) do
+    sender = :erlang.node(pid)
     task_code = Code.format_string!(task_code)
-    Logger.info("Received solution for task #{task_name} from #{inspect(from)}:\n\n#{task_code}")
+
+    Logger.info(
+      "Received solution for task #{task_name} from #{inspect(sender)}:\n\n#{task_code}"
+    )
+
     {:reply, :ok, state}
+  rescue
+    err -> {:reply, inspect(err), state}
   end
 end

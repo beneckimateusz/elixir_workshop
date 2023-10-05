@@ -37,8 +37,8 @@ defmodule ElixirWorkshop.TaskCell do
   @impl true
   def to_source(%{"code" => code, "task" => task, "remote" => remote}) do
     case GenServer.call(
-           {ElixirWorkshop.TaskRunner, :"#{remote}"},
-           {:submit_task, "#{task}", "#{code}"}
+           {ElixirWorkshop.TaskRunner, remote},
+           {:submit_task, task, code}
          ) do
       :ok -> code
       _ -> "Validation failed 🧐 Call Mateusz 👨‍🏫"
