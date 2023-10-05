@@ -12,7 +12,8 @@ defmodule ElixirWorkshop.TaskCell do
   @impl true
   def handle_connect(ctx) do
     # fetch list of tasks from remote
-    tasks = :rpc.call(ctx.assigns.remote, ElixirWorkshop.TaskRunner, :get_tasks_list, [])
+    remote = String.to_atom(System.get_env("LB_WORKSHOP"))
+    tasks = :rpc.call(remote, ElixirWorkshop.TaskRunner, :get_tasks_list, [])
     {:ok, %{tasks: tasks}, ctx}
   end
 
@@ -28,8 +29,10 @@ defmodule ElixirWorkshop.TaskCell do
 
   @impl true
   def to_source(attrs) do
+    IO.inspect(attrs)
+
     """
-    Tutaj bedzie source
+    # Tutaj bedzie source
     """
   end
 

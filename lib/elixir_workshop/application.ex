@@ -12,6 +12,7 @@ defmodule ElixirWorkshop.Application do
     children = [
       # Starts a worker by calling: ElixirWorkshop.Worker.start_link(arg)
       # {ElixirWorkshop.Worker, arg}
+      ElixirWorkshop.TaskRunner
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
