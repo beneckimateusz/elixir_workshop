@@ -1,0 +1,17 @@
+# Participant scratchpad
+
+```elixir
+Mix.install([
+  {:elixir_workshop, path: "~/Projects/elixir_workshop"}
+])
+```
+
+## Section
+
+<!-- livebook:{"attrs":{"code":"","task":"second_task"},"chunks":null,"kind":"Elixir.ElixirWorkshop.TaskCell","livebook_object":"smart_cell"} -->
+
+```elixir
+
+```
+
+<!-- livebook:{"offset":289,"stamp":{"token":"QTEyOEdDTQ.6w-TgpbSztqfGCuEZckLDXRBMHRURvjWQsbwoyYc_EHW-eFKnk4FOobWQJ0.kXLAHFx4mBsqxJAm.rACKKtzd4BdUfh_Cv0bUrhK4q6Q2kxwICDMvlztjeI0LgSZOFPfoFoPRSuY.rWTXqgWnVMHBz6fCBUG_xQ","version":1}} -->

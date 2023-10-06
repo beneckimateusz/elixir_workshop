@@ -17,7 +17,7 @@ defmodule ElixirWorkshop.TaskCell do
     # fetch list of tasks from remote
     tasks_list = GenServer.call({ElixirWorkshop.TaskRunner, ctx.assigns.remote}, :register)
 
-    first_task = tasks_list |> Map.to_list() |> hd() |> elem(0)
+    first_task = tasks_list |> Map.to_list() |> List.first({nil}) |> elem(0)
     task = ctx.assigns.task || first_task
 
     {:ok, %{tasks_list: tasks_list, task: task}, assign(ctx, task: task)}
@@ -30,27 +30,33 @@ defmodule ElixirWorkshop.TaskCell do
 
   @impl true
   def to_attrs(ctx) do
-    %{"task" => ctx.assigns.task, "remote" => ctx.assigns.remote}
+    %{"task" => ctx.assigns.task}
   end
 
   @impl true
-  def to_source(%{"code" => code, "task" => task, "remote" => remote}) do
-    quoted_code =
-      quote bind_quoted: [code: code, task: task, remote: remote] do
-        case GenServer.call(
-               {ElixirWorkshop.TaskRunner, remote},
-               {:submit_task, task, code}
-             ) do
-          :ok ->
-            code |> Code.eval_string() |> elem(0)
+  def to_source(%{"code" => code}) do
+    code
+  end
 
-          _ ->
-            """
-            "Validation failed 🧐 Call Mateusz 👨‍🏫"
-            """
-        end
-      end
+  @impl true
+  def scan_eval_result(server, {:ok, _}) do
+    %{attrs: %{"code" => code}, ctx: %{assigns: %{remote: remote, task: task}}} =
+      :sys.get_state(server)
 
-    Kino.SmartCell.quoted_to_string(quoted_code)
+    validation =
+      GenServer.call(
+        {ElixirWorkshop.TaskRunner, remote},
+        {:submit_task, task, code}
+      )
+
+    IO.write("Validation: #{validation}")
+  end
+
+  def scan_eval_result(_server, _result), do: nil
+
+  @impl true
+  def handle_info({:tasks_list, list}, ctx) do
+    broadcast_event(ctx, "tasks_list", list)
+    {:noreply, assign(ctx, tasks_list: list)}
   end
 end

@@ -13,10 +13,11 @@ defmodule ElixirWorkshop.TaskRunner do
   end
 
   @impl true
-  def handle_call(:register, {pid, _alias}, %{tasks_list: tasks_list} = state) do
+  def handle_call(:register, {pid, _alias}, %{tasks_list: tasks_list, clients: clients} = state) do
     sender = :erlang.node(pid)
-    Logger.info("Registering #{sender} with PID #{inspect(pid)}")
-    {:reply, tasks_list, put_in(state, [:clients, sender], pid)}
+    Logger.info("Registering #{sender} with #{inspect(pid)}")
+    clients = [pid | clients]
+    {:reply, tasks_list, Map.put(state, :clients, clients)}
   end
 
   def handle_call({:submit_task, task_name, task_code}, {pid, _alias}, state) do
@@ -36,7 +37,7 @@ defmodule ElixirWorkshop.TaskRunner do
 
     tasks_list = Map.put(tasks_list, task_id, task_name)
 
-    Enum.each(state.clients, fn {_node, pid} -> send(pid, {:tasks_list, tasks_list}) end)
+    Enum.each(state.clients, &send(&1, {:tasks_list, tasks_list}))
 
     {:noreply, Map.put(state, :tasks_list, tasks_list)}
   end
@@ -46,7 +47,7 @@ defmodule ElixirWorkshop.TaskRunner do
 
     tasks_list = Map.delete(tasks_list, task_id)
 
-    Enum.each(state.clients, fn {_node, pid} -> send(pid, {:tasks_list, tasks_list}) end)
+    Enum.each(state.clients, &send(&1, {:tasks_list, tasks_list}))
 
     {:noreply, Map.put(state, :tasks_list, tasks_list)}
   end
