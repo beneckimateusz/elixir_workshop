@@ -9,7 +9,7 @@ defmodule ElixirWorkshop.TaskRunner do
 
   @impl true
   def init(_) do
-    {:ok, %{clients: [], tasks_list: %{pipelines: "Pipelines", for_comp: "for comprehensions"}}}
+    {:ok, %{clients: [], tasks_list: %{}}}
   end
 
   @impl true
