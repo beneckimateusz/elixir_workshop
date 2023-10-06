@@ -15,7 +15,7 @@ defmodule ElixirWorkshop.TaskCell do
   @impl true
   def handle_connect(ctx) do
     # fetch list of tasks from remote
-    tasks_list = GenServer.call({ElixirWorkshop.TaskRunner, ctx.assigns.remote}, :get_tasks_list)
+    tasks_list = GenServer.call({ElixirWorkshop.TaskRunner, ctx.assigns.remote}, :register)
 
     first_task = tasks_list |> Map.to_list() |> hd() |> elem(0)
     task = ctx.assigns.task || first_task
@@ -24,9 +24,8 @@ defmodule ElixirWorkshop.TaskCell do
   end
 
   @impl true
-  def handle_event("update", upd, ctx) do
-    IO.inspect(upd)
-    {:noreply, ctx}
+  def handle_event("update", task, ctx) do
+    {:noreply, assign(ctx, task: String.to_existing_atom(task))}
   end
 
   @impl true
@@ -36,17 +35,22 @@ defmodule ElixirWorkshop.TaskCell do
 
   @impl true
   def to_source(%{"code" => code, "task" => task, "remote" => remote}) do
-    case GenServer.call(
-           {ElixirWorkshop.TaskRunner, remote},
-           {:submit_task, task, code}
-         ) do
-      :ok ->
-        code
+    quoted_code =
+      quote bind_quoted: [code: code, task: task, remote: remote] do
+        case GenServer.call(
+               {ElixirWorkshop.TaskRunner, remote},
+               {:submit_task, task, code}
+             ) do
+          :ok ->
+            code |> Code.eval_string() |> elem(0)
 
-      _ ->
-        """
-        "Validation failed 🧐 Call Mateusz 👨‍🏫"
-        """
-    end
+          _ ->
+            """
+            "Validation failed 🧐 Call Mateusz 👨‍🏫"
+            """
+        end
+      end
+
+    Kino.SmartCell.quoted_to_string(quoted_code)
   end
 end
