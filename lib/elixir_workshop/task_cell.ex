@@ -5,17 +5,14 @@ defmodule ElixirWorkshop.TaskCell do
 
   @impl true
   def init(attrs, ctx) do
-    remote = String.to_atom(System.get_env("LB_WORKSHOP"))
     task = attrs["task"] || nil
-
-    {:ok, assign(ctx, task: task, remote: remote),
-     editor: [attribute: "code", language: "elixir"]}
+    {:ok, assign(ctx, task: task), editor: [attribute: "code", language: "elixir"]}
   end
 
   @impl true
   def handle_connect(ctx) do
     # fetch list of tasks from remote
-    tasks_list = GenServer.call({ElixirWorkshop.TaskRunner, ctx.assigns.remote}, :register)
+    tasks_list = ElixirWorkshop.TaskRunner.register()
 
     first_task = tasks_list |> Map.to_list() |> List.first({nil}) |> elem(0)
     task = ctx.assigns.task || first_task
@@ -40,14 +37,9 @@ defmodule ElixirWorkshop.TaskCell do
 
   @impl true
   def scan_eval_result(server, {:ok, _}) do
-    %{attrs: %{"code" => code}, ctx: %{assigns: %{remote: remote, task: task}}} =
-      :sys.get_state(server)
+    %{attrs: %{"code" => code}, ctx: %{assigns: %{task: task}}} = :sys.get_state(server)
 
-    validation =
-      GenServer.call(
-        {ElixirWorkshop.TaskRunner, remote},
-        {:submit_task, task, code}
-      )
+    validation = ElixirWorkshop.TaskRunner.submit_task(task, code)
 
     IO.write("Validation: #{validation}")
   end

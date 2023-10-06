@@ -8,10 +8,10 @@ Mix.install([
 
 ## Section
 
-<!-- livebook:{"attrs":{"code":"","task":"second_task"},"chunks":null,"kind":"Elixir.ElixirWorkshop.TaskCell","livebook_object":"smart_cell"} -->
+<!-- livebook:{"attrs":{"code":"1+2","task":"third_task"},"chunks":null,"kind":"Elixir.ElixirWorkshop.TaskCell","livebook_object":"smart_cell"} -->
 
 ```elixir
-
+1 + 2
 ```
 
-<!-- livebook:{"offset":289,"stamp":{"token":"QTEyOEdDTQ.6w-TgpbSztqfGCuEZckLDXRBMHRURvjWQsbwoyYc_EHW-eFKnk4FOobWQJ0.kXLAHFx4mBsqxJAm.rACKKtzd4BdUfh_Cv0bUrhK4q6Q2kxwICDMvlztjeI0LgSZOFPfoFoPRSuY.rWTXqgWnVMHBz6fCBUG_xQ","version":1}} -->
+<!-- livebook:{"offset":296,"stamp":{"token":"QTEyOEdDTQ.fmOeRbFOuahDZJCB7eRudbEui1gNZJkichTx2APOgJMxhE8S8A1znHaAng4.mVlrAk4HIpmQyseL.9BF9cdjASrio2scAX4X5AIXwQF_e9yUnHhof9GIWsRYJzx0z4rlKS_bOt6s.4LQp_pRgdlE_-6C6BK0yNw","version":1}} -->
