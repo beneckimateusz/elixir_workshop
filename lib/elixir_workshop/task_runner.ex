@@ -15,7 +15,7 @@ defmodule ElixirWorkshop.TaskRunner do
   @impl true
   def handle_call(:register, {pid, _alias}, %{tasks_list: tasks_list} = state) do
     sender = :erlang.node(pid)
-    Logger.info("Registering #{sender} with PID #{pid}")
+    Logger.info("Registering #{sender} with PID #{inspect(pid)}")
     {:reply, tasks_list, put_in(state, [:clients, sender], pid)}
   end
 
