@@ -14,4 +14,4 @@ Mix.install([
 1 + 2
 ```
 
-<!-- livebook:{"offset":296,"stamp":{"token":"QTEyOEdDTQ.fmOeRbFOuahDZJCB7eRudbEui1gNZJkichTx2APOgJMxhE8S8A1znHaAng4.mVlrAk4HIpmQyseL.9BF9cdjASrio2scAX4X5AIXwQF_e9yUnHhof9GIWsRYJzx0z4rlKS_bOt6s.4LQp_pRgdlE_-6C6BK0yNw","version":1}} -->
+<!-- livebook:{"offset":296,"stamp":{"token":"QTEyOEdDTQ._YIUjJyu3Hx9MvCjACHD7aG7uQqhXvW_ubZsZwJctM4nKcp7F4stpVuLfF0.eqwlnQFgakwjvLWI.fdccbubgmDf0SxWulQ1pwJbtDY3c543opJ7UAxRxQ9l0bEtpnELdPdFcJuY.L9kSClm4MbAbK-yudxSMhA","version":1}} -->
