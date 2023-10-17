@@ -432,6 +432,78 @@ tl(list)
 [1.337, :pog]
 ```
 
+#### Benchmarking lists
+
+```elixir
+defmodule ListBenchmark do
+  def run() do
+    data = Enum.to_list(1..100_000_000)
+
+    for benchmark <- [&read/1, &add/1, &delete/1] do
+      apply(benchmark, [data])
+      |> IO.inspect()
+    end
+  end
+
+  defp read(list) do
+    %{
+      "read_first" => measure(fn -> hd(list) end),
+      "read_last" => measure(fn -> List.last(list) end)
+    }
+  end
+
+  defp add(list) do
+    %{
+      "add_first" => measure(fn -> [-1410 | list] end),
+      "add_last" => measure(fn -> List.insert_at(list, -1, -1410) end)
+    }
+  end
+
+  defp delete(list) do
+    %{
+      "delete_first" =>
+        measure(fn ->
+          [_ | rest] = list
+          rest
+        end),
+      "delete_last" => measure(fn -> List.delete_at(list, -1) end)
+    }
+  end
+
+  defp measure(fun) do
+    fun
+    |> :timer.tc()
+    |> elem(0)
+    |> Kernel./(1_000_000)
+  end
+end
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+{:module, ListBenchmark, <<70, 79, 82, 49, 0, 0, 14, ...>>, {:measure, 1}}
+```
+
+```elixir
+ListBenchmark.run()
+:ok
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+%{"read_first" => 0.0, "read_last" => 1.300372}
+%{"add_first" => 0.0, "add_last" => 1.970866}
+%{"delete_first" => 0.0, "delete_last" => 5.236128}
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+:ok
+```
+
 ### [Tuples](https://hexdocs.pm/elixir/Tuple.html)
 
 Similar to lists, but stored contiguously in memory.
