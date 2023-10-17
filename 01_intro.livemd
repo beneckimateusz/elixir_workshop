@@ -128,25 +128,7 @@ Everything except `false` and `nil` is truthy.
 
 ![](files/alien_comparisons.jpg)
 
-```elixir
-true
-```
-
-<!-- livebook:{"output":true} -->
-
-```
-true
-```
-
-```elixir
-false
-```
-
-<!-- livebook:{"output":true} -->
-
-```
-false
-```
+<!-- livebook:{"break_markdown":true} -->
 
 ### [Atoms](https://hexdocs.pm/elixir/Atom.html)
 
@@ -231,16 +213,6 @@ UTF-8 encoded, wrapped in double quotes
 
 ```
 "Elixir workshop is bussin rn fr 😎👍🏻"
-```
-
-```elixir
-"Ząb zupa zębowa, dąb zupa dębowa"
-```
-
-<!-- livebook:{"output":true} -->
-
-```
-"Ząb zupa zębowa, dąb zupa dębowa"
 ```
 
 ```elixir
@@ -664,7 +636,7 @@ sum = fn a, b -> a + b end
 <!-- livebook:{"output":true} -->
 
 ```
-#Function<41.125776118/2 in :erl_eval.expr/6>
+#Function<41.105768164/2 in :erl_eval.expr/6>
 ```
 
 ```elixir
@@ -675,7 +647,8 @@ sum(7, 3)
 
 ```
 error: undefined function sum/2 (there is no such import)
-  stuff/elixir_workshop/01_intro.livemd#cell:h74cwcxcsnnxbawj2a6bboxfakvtpl5u:1
+  stuff/elixir_workshop/01_intro.livemd#cell:br56v562an5esmyu4vhuvoilzm6npf6e:1
+
 ```
 
 If you're invoking the anonymous function itself you must follow it with a `.`.
@@ -718,7 +691,7 @@ subtract.(5, 4)
 
 Named functions are defined **within a module** using the `def` keyword.
 
-In simple terms, module is a collection of functions and a way to organize the code. That's all we need to know for know.
+In simple terms, module is a collection of functions and a way to organize the code. That's all we need to know for now.
 
 ```elixir
 defmodule DummyCow do
@@ -973,7 +946,7 @@ We use a `:calendar.local_time/0` funtion which comes from Erlang, hence it's re
 <!-- livebook:{"output":true} -->
 
 ```
-{{2023, 9, 12}, {8, 22, 32}}
+{{2023, 10, 17}, {21, 51, 6}}
 ```
 
 ```elixir
@@ -983,7 +956,7 @@ We use a `:calendar.local_time/0` funtion which comes from Erlang, hence it's re
 <!-- livebook:{"output":true} -->
 
 ```
-{2023, 9, 12}
+{2023, 10, 17}
 ```
 
 ```elixir
@@ -993,7 +966,7 @@ month
 <!-- livebook:{"output":true} -->
 
 ```
-9
+10
 ```
 
 ```elixir
@@ -1003,7 +976,7 @@ month
 <!-- livebook:{"output":true} -->
 
 ```
-{8, 22, 32}
+{21, 51, 6}
 ```
 
 ```elixir
@@ -1013,7 +986,7 @@ second
 <!-- livebook:{"output":true} -->
 
 ```
-32
+6
 ```
 
 ```elixir
@@ -1024,7 +997,7 @@ hour
 <!-- livebook:{"output":true} -->
 
 ```
-8
+21
 ```
 
 #### List example
@@ -1164,32 +1137,6 @@ end
 
 ```
 "result"
-```
-
-`else` is not obligatory
-
-```elixir
-if "truthy value" do
-  "truthy"
-end
-```
-
-<!-- livebook:{"output":true} -->
-
-```
-"truthy"
-```
-
-```elixir
-if false do
-  "that's not the result"
-end
-```
-
-<!-- livebook:{"output":true} -->
-
-```
-nil
 ```
 
 There's no `else if`/`elif` counterpart but there are other control structures that achieve a lot powered by pattern matching.
