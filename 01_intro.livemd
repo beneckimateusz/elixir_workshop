@@ -1238,6 +1238,30 @@ case :even do
 end
 ```
 
+### `cond`
+
+```elixir
+cond do
+  2 + 2 == 5 ->
+    "this will not be true"
+
+  2 * 2 == 3 ->
+    "nor this"
+
+  1 + 1 == 2 ->
+    "but this will"
+
+  true ->
+    "catch em all"
+end
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+"but this will"
+```
+
 ## Code examples
 
 ```elixir
