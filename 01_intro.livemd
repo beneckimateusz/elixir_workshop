@@ -1,4 +1,4 @@
-<!-- livebook:{"persist_outputs":true} -->
+<!-- livebook:{"file_entries":[{"name":"alien_comparisons.jpeg","type":"attachment"},{"name":"head_tail.png","type":"attachment"}],"persist_outputs":true} -->
 
 # 01 // Intro
 
@@ -6,12 +6,6 @@
 Mix.install([
   {:kino, "~> 0.10.0"}
 ])
-```
-
-<!-- livebook:{"output":true} -->
-
-```
-:ok
 ```
 
 ## Basic Data Types
@@ -132,7 +126,7 @@ There is `true` and `false`.
 
 Everything except `false` and `nil` is truthy.
 
-![](images/alien_comparisons.jpg)
+![](files/alien_comparisons.jpg)
 
 ```elixir
 true
@@ -416,7 +410,7 @@ list
 
 <!-- livebook:{"break_markdown":true} -->
 
-![](images/head_tail.png)
+![](files/head_tail.png)
 
 ```elixir
 hd(list)
@@ -609,8 +603,7 @@ sum(7, 3)
 
 ```
 error: undefined function sum/2 (there is no such import)
-  stuff/elixir_workshop/01_intro.livemd#cell:eesrhhsufiwb2wlvjzvymubqguz375cx:1
-
+  stuff/elixir_workshop/01_intro.livemd#cell:h74cwcxcsnnxbawj2a6bboxfakvtpl5u:1
 ```
 
 If you're invoking the anonymous function itself you must follow it with a `.`.
