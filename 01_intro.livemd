@@ -648,7 +648,6 @@ sum(7, 3)
 ```
 error: undefined function sum/2 (there is no such import)
   stuff/elixir_workshop/repo/01_new_intro.livemd#cell:orqrcotet6uoavo3k4dndn75yikt6ers:1
-
 ```
 
 If you're invoking the anonymous function itself you must follow it with a `.`.
@@ -913,3 +912,11 @@ Kino.FS.file_path("aoc_example_input.txt")
 ```
 5
 ```
+
+## Coming up in the second workshop 🤠
+
+* recursion + tail recursion
+* pattern matching and guards
+* another binary parsing(?) DIY
+
+and after that (workshop 3rd+) we'll look into concurrency basics
