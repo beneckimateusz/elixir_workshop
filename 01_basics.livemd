@@ -8,7 +8,9 @@ Mix.install([
 ])
 ```
 
-## Resources
+## Intro
+
+### Resources
 
 * [Workshop repository | GitHub](https://github.com/beneckimateusz/elixir_workshop/)
 
@@ -19,6 +21,16 @@ Mix.install([
 * [Elixir School (website)](https://elixirschool.com/en)
 
 * [Elixir in Action (book)](https://www.manning.com/books/elixir-in-action-second-edition)
+
+### Elixir use cases
+
+* focused on concurrency
+* especially effective for communication-oriented systems, like servers and web applications
+* allows for high availibility
+* efficiently uses CPU resources
+* simplifies building distributed systems
+
+### Remember about immutability
 
 ## Basic Data Types
 
@@ -390,10 +402,6 @@ list
 [1337, 1.337, :pog]
 ```
 
-🙋🏻 **What `list` are we referring to?** Why `"test"` is neither the head nor in the tail?
-
-<!-- livebook:{"break_markdown":true} -->
-
 ![](files/head_tail.png)
 
 ```elixir
@@ -514,7 +522,7 @@ Given the aforementioned fact, we know that getting the size of a tuple is faste
 
 **Rule of a thumb from the old times when C ruled:** _size_ stands for something fixed and _length_ stands for something variable.
 
-[Unfortunately, Java decided to turn things around.](https://softwareengineering.stackexchange.com/questions/303909/what-is-the-difference-between-size-and-length)
+[Java decided to turn things around.](https://softwareengineering.stackexchange.com/questions/303909/what-is-the-difference-between-size-and-length)
 
 ```elixir
 File.read("path/to/unknown/file")
@@ -605,34 +613,6 @@ special_syntax_map == %{:key1 => "val1", :key2 => "val2"}
 
 ```
 true
-```
-
-Here's a sneak peek of using the `Map` module.
-
-`Map.put/3` allows to put a value in the map under a key.
-
-<!-- livebook:{"break_markdown":true} -->
-
-⌨️ Hands-on: create a new Elixir cell below and add a key-value pair to the `special_syntax_map` map.
-
-<!-- livebook:{"break_markdown":true} -->
-
-There's also a shortcut for updating **existing** keys in a map:
-
-```elixir
-%{special_syntax_map | key1: "new value"}
-```
-
-<!-- livebook:{"output":true} -->
-
-```
-%{key1: "new value", key2: "val2"}
-```
-
-It won't work for keys that don't already exist in the map:
-
-```elixir
-%{special_syntax_map | odd_key: "test"}
 ```
 
 ## Functions
@@ -828,6 +808,8 @@ The [Enum](https://hexdocs.pm/elixir/Enum.html) module includes --number from ab
 <!-- livebook:{"break_markdown":true} -->
 
 #### [`Enum.filter/2`](https://hexdocs.pm/elixir/Enum.html#filter/2)
+
+⌨️ Documentation -> Source code -> Check implementation
 
 ```elixir
 Enum.filter([1, 2, 3, 4], fn x -> rem(x, 2) == 0 end)
