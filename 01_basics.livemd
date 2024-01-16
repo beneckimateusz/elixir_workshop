@@ -1,6 +1,6 @@
 <!-- livebook:{"file_entries":[{"name":"alien_comparisons.jpeg","type":"attachment"},{"name":"aoc_example_input.txt","type":"attachment"},{"name":"aoc_input.txt","type":"attachment"},{"name":"head_tail.png","type":"attachment"}],"persist_outputs":true} -->
 
-# 01 // Intro
+# 01 // Basics
 
 ```elixir
 Mix.install([
