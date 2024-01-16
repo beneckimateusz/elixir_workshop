@@ -8,6 +8,18 @@ Mix.install([
 ])
 ```
 
+## Resources
+
+* [Workshop repository | GitHub](https://github.com/beneckimateusz/elixir_workshop/)
+
+* [Elixir Documentation | HexDocs](https://hexdocs.pm/elixir/1.16.0/Kernel.html)
+
+* [Install Livebook | GitHub](https://github.com/livebook-dev/livebook?tab=readme-ov-file#installation)
+
+* [Elixir School (website)](https://elixirschool.com/en)
+
+* [Elixir in Action (book)](https://www.manning.com/books/elixir-in-action-second-edition)
+
 ## Basic Data Types
 
 [`IEx.Helpers.i/1`](https://hexdocs.pm/iex/IEx.Helpers.html#i/1) is automatically imported in `iex`, as well as other functions from that module, so we don't need to prefix it there.
@@ -743,6 +755,8 @@ DummyCow.oneliner(1, 2)
 ### Arity
 
 For now, we just need to know that _arity_ is a number of input parameters that a function takes.
+
+e.g. `Enum.all?/2` takes two, an enumerable and a predicate function.
 
 <!-- livebook:{"break_markdown":true} -->
 
